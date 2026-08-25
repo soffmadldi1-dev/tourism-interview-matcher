@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 200 33% 98%;
+    --foreground: 210 24% 14%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 24% 14%;
+
+    --primary: 190 88% 27%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 200 24% 94%;
+    --secondary-foreground: 210 24% 20%;
+
+    --muted: 200 22% 95%;
+    --muted-foreground: 213 12% 45%;
+
+    --accent: 189 60% 94%;
+    --accent-foreground: 190 88% 22%;
+
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 208 22% 89%;
+    --input: 208 22% 86%;
+    --ring: 190 88% 32%;
+
+    --radius: 0.6rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04";
+    word-break: keep-all;
+  }
+
+  /* 스크롤바 (우측 리포트 패널) */
+  .scroll-area::-webkit-scrollbar {
+    width: 10px;
+  }
+  .scroll-area::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-border;
+  }
+  .scroll-area::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/40;
+  }
+}
+
+@layer components {
+  /* 리포트 본문에서 반복되는 "라벨 + 값" 블록 */
+  .field-label {
+    @apply text-[11px] font-semibold uppercase tracking-wider text-muted-foreground;
+  }
+
+  .prose-report {
+    @apply text-sm leading-[1.75] text-foreground/90;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+ * 인쇄 / PDF 저장 전용 스타일
+ * 브라우저 인쇄 대화상자에서 "PDF로 저장"을 선택하면 리포트만 출력됩니다.
+ * ──────────────────────────────────────────────────────────── */
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-area {
+    position: static !important;
+    display: block !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* 접힌 아코디언도 인쇄 시에는 모두 펼침 */
+  [data-state="closed"] > div,
+  [data-radix-collapsible-content] {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+    animation: none !important;
+  }
+
+  .print-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
