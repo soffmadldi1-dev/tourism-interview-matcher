@@ -162,10 +162,10 @@ export function Workspace() {
   const busy = companyStatus === "loading" || storyStatus === "loading";
 
   return (
-    <div className="mx-auto flex min-h-[100dvh] max-w-[1600px] flex-col lg:h-[100dvh]">
+    <div className="mx-auto flex min-h-[100dvh] max-w-[1320px] flex-col lg:h-[100dvh]">
       <Header onReset={handleReset} hasResult={Boolean(intel)} />
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-0 lg:grid-cols-[minmax(380px,440px)_1fr]">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-0 lg:grid-cols-[minmax(420px,480px)_minmax(0,1fr)]">
         {/* ── 좌측: 입력 ─────────────────────────────────── */}
         <aside className="scroll-area no-print border-b border-border bg-card px-5 py-5 lg:min-h-0 lg:overflow-y-auto lg:border-b-0 lg:border-r">
           <Tabs value={tab} onValueChange={(value) => setTab(value as typeof tab)}>
