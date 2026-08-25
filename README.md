@@ -5,6 +5,8 @@
 홈페이지의 인재상 문구만 외워 가는 준비를 벗어나, 기업의 **최근 전략과 현안**을 실시간 웹 검색으로 파악하고
 지원자의 실제 경험을 그 현안과 1:1로 연결한 면접 스크립트를 만듭니다.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsoffmadldi1-dev%2Ftourism-interview-matcher&project-name=tourism-interview-matcher&repository-name=tourism-interview-matcher&env=ANTHROPIC_API_KEY,ANTHROPIC_MODEL,TAVILY_API_KEY,SERPER_API_KEY,PERPLEXITY_API_KEY,SEARCH_PROVIDER&envDescription=Claude%20API%20%ED%82%A4%EB%8A%94%20%ED%95%84%EC%88%98%EC%9E%85%EB%8B%88%EB%8B%A4.%20%EA%B2%80%EC%83%89%20%ED%82%A4%EB%8A%94%20%EB%B9%84%EC%9B%8C%EB%91%90%EB%A9%B4%20Claude%20%EB%82%B4%EC%9E%A5%20%EA%B2%80%EC%83%89%EC%9C%BC%EB%A1%9C%20%EB%8F%99%EC%9E%91%ED%95%A9%EB%8B%88%EB%8B%A4.&envLink=https%3A%2F%2Fgithub.com%2Fsoffmadldi1-dev%2Ftourism-interview-matcher%23%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98)
+
 ---
 
 ## 1. 무엇을 하는가
