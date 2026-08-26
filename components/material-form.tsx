@@ -25,11 +25,12 @@ const MATERIAL_PLACEHOLDER = `여기에 붙여넣으세요. 정리하지 않아�
 2026.06 국제회의 유치 실적 1위 달성
 2025.11 디지털 전시 플랫폼 오픈`;
 
-const ANALYSIS_PLACEHOLDER = `아직 비어 있습니다.
+const ANALYSIS_PLACEHOLDER = `아직 비어 있습니다. 순서:
 
-오른쪽 '1단계 · 기업 분석' 탭에서
-프롬프트를 복사 → Claude에 붙여넣기 →
-받은 답변 전체를 여기에 붙여넣으세요.`;
+1. 위 칸을 먼저 채우세요.
+2. 오른쪽 위에서 '1단계 기업 분석' 탭을 클릭하세요.
+3. 그 안의 프롬프트를 복사해서 Claude(claude.ai)에 붙여넣으세요.
+4. Claude가 답한 내용 전체를 복사해서 여기에 붙여넣으세요.`;
 
 export function MaterialForm({ context, onChange }: MaterialFormProps) {
   const materialCount = context.collectedMaterial.trim().length;
@@ -79,13 +80,16 @@ export function MaterialForm({ context, onChange }: MaterialFormProps) {
       <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-3">
         <div className="flex items-start justify-between gap-2">
           <Label htmlFor="companyAnalysis" className="flex items-center gap-1.5 text-[13px]">
-            <FileText className="h-3.5 w-3.5 text-primary" />② Claude가 정리해 준 분석 결과
+            <FileText className="h-3.5 w-3.5 text-primary" />② &lsquo;1단계 기업 분석&rsquo;에서
+            Claude가 준 답변
           </Label>
           <CharCount count={analysisCount} good={500} />
         </div>
 
         <p className="text-xs leading-relaxed text-muted-foreground">
-          Claude가 준 답변을 <strong className="text-foreground">통째로</strong> 붙여넣으세요.
+          오른쪽 위 <strong className="text-foreground">&lsquo;1단계 기업 분석&rsquo;</strong> 탭의
+          프롬프트를 복사해 Claude에 붙여넣으면 답변이 나옵니다. 그 답변{" "}
+          <strong className="text-foreground">전체</strong>를 여기에 붙여넣으세요.
           <br />이 칸을 채우면 <strong className="text-foreground">2·3단계 프롬프트가 모두 열립니다.</strong>
         </p>
 

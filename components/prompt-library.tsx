@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ArrowRight, Check, Copy, ExternalLink, Eye, EyeOff, Lock } from "lucide-react";
+import { ArrowRight, Check, Copy, ExternalLink, Eye, EyeOff, Link2, Lock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,6 +54,7 @@ function PromptCard({
   const [open, setOpen] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
   const [failed, setFailed] = React.useState(false);
+  const [linkCopied, setLinkCopied] = React.useState(false);
 
   const missing = missingFields(template, context);
   const ready = missing.length === 0;
@@ -68,10 +69,20 @@ function PromptCard({
     return () => clearTimeout(timer);
   }, [copied, failed]);
 
+  React.useEffect(() => {
+    if (!linkCopied) return;
+    const timer = setTimeout(() => setLinkCopied(false), 2200);
+    return () => clearTimeout(timer);
+  }, [linkCopied]);
+
   async function handleCopy() {
     const succeeded = await copyToClipboard(prompt);
     if (succeeded) setCopied(true);
     else setFailed(true);
+  }
+
+  async function handleCopyLink() {
+    if (await copyToClipboard(CLAUDE_URL)) setLinkCopied(true);
   }
 
   return (
@@ -115,11 +126,21 @@ function PromptCard({
               Claude 열기
             </a>
           </Button>
+          <Button size="sm" variant="ghost" onClick={handleCopyLink} title="claude.ai 주소 복사">
+            {linkCopied ? <Check className="text-emerald-600" /> : <Link2 />}
+            {linkCopied ? "복사됨!" : "주소 복사"}
+          </Button>
           <Button size="sm" variant="ghost" onClick={() => setOpen((prev) => !prev)}>
             {open ? <EyeOff /> : <Eye />}
             {open ? "접기" : "내용 보기"}
           </Button>
         </div>
+
+        <p className="text-[11px] leading-relaxed text-muted-foreground">
+          &lsquo;Claude 열기&rsquo;를 눌렀는데 <strong>데스크탑 앱</strong>이 열린다면, &lsquo;주소
+          복사&rsquo;로 링크를 복사해 평소 쓰는 <strong>웹 브라우저 새 탭</strong> 주소창에
+          붙여넣으세요. 설치 없이 그대로 접속됩니다.
+        </p>
 
         {copied ? (
           <p className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700">

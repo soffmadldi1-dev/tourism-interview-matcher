@@ -34,8 +34,8 @@ export const STAGE_META: Record<
     description: "직접 모은 자료를 AI에게 정리시켜 면접용 정보로 바꿉니다.",
   },
   document: {
-    label: "2단계 · 서류 맞춤화",
-    short: "서류 맞춤화",
+    label: "2단계 · 서류 매칭",
+    short: "서류 매칭",
     description: "분석 결과에 맞춰 이력서와 자기소개서를 이 회사용으로 고칩니다.",
   },
   interview: {

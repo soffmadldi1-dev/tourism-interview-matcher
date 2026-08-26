@@ -160,15 +160,15 @@ export function Workspace() {
                     </TabsTrigger>
                     <TabsTrigger value="analyze">
                       <Compass className="h-4 w-4" />
-                      <span className="hidden sm:inline">1단계&nbsp;</span>기업분석
+                      <span className="hidden sm:inline">1단계&nbsp;</span>기업 분석
                     </TabsTrigger>
                     <TabsTrigger value="document">
                       <FileUser className="h-4 w-4" />
-                      <span className="hidden sm:inline">2단계&nbsp;</span>서류
+                      <span className="hidden sm:inline">2단계&nbsp;</span>서류 매칭
                     </TabsTrigger>
                     <TabsTrigger value="interview">
                       <MessagesSquare className="h-4 w-4" />
-                      <span className="hidden sm:inline">3단계&nbsp;</span>면접
+                      <span className="hidden sm:inline">3단계&nbsp;</span>면접 준비
                     </TabsTrigger>
                   </TabsList>
 
@@ -239,11 +239,11 @@ function Header({
           <Compass className="h-5 w-5" />
         </div>
         <div>
-          <h1 className="text-sm font-bold leading-tight">관광 취업 준비 워크벤치</h1>
+          <h1 className="text-sm font-bold leading-tight">관광 취업 프롬프트 메이커</h1>
           <p className="text-xs text-muted-foreground">
             {context.companyName
               ? `${context.companyName} ${context.jobTitle}`.trim()
-              : "기업 조사 → 서류 맞춤화 → 면접 준비"}
+              : "기업 조사 → 서류 매칭 → 면접 준비"}
           </p>
         </div>
       </div>
