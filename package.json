@@ -2,7 +2,7 @@
   "name": "tourism-interview-matcher",
   "version": "0.1.0",
   "private": true,
-  "description": "관광 특화 기업 분석 및 면접 스토리 매칭 툴 (MVP)",
+  "description": "관광 산업 취업 준비 워크벤치 — 검색 링크 생성 + 맞춤 프롬프트 제공 (API 키·결제 불필요)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,8 +11,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.120.0",
-    "@hookform/resolvers": "^5.9.1",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.2",
@@ -24,7 +22,6 @@
     "next": "^15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-hook-form": "^7.54.2",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^4.4.3"

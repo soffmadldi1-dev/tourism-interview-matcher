@@ -1,4 +1,4 @@
-import type { SearchProvider, TourismSector, ToneKey } from "@/lib/types";
+import type { TourismSector, ToneKey } from "@/lib/types";
 
 /* ────────────────────────────────────────────────────────────
  * 관광 산업 업종 프리셋
@@ -193,15 +193,3 @@ export const TONE_MAP: Record<ToneKey, TonePreset> = TONE_PRESETS.reduce(
   (acc, preset) => ({ ...acc, [preset.key]: preset }),
   {} as Record<ToneKey, TonePreset>,
 );
-
-/* ────────────────────────────────────────────────────────────
- * 검색 공급자 라벨 (UI 배지)
- * ──────────────────────────────────────────────────────────── */
-
-export const PROVIDER_LABEL: Record<SearchProvider, string> = {
-  tavily: "Tavily 웹검색",
-  serper: "Google(Serper) 웹검색",
-  perplexity: "Perplexity 웹검색",
-  native: "Claude 내장 웹검색",
-  none: "검색 미사용(사전지식)",
-};

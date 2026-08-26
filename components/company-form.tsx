@@ -1,51 +1,45 @@
 "use client";
 
 import * as React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { z } from "zod";
-import { Building2, Loader2, Search } from "lucide-react";
+import { Building2, Globe } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { SECTOR_PRESETS } from "@/lib/presets";
-import { companySearchInputSchema } from "@/lib/schemas";
-import type { CompanySearchInput, TourismSector } from "@/lib/types";
+import { companyFormSchema } from "@/lib/schemas";
+import type { PromptContext, TourismSector } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-type FormValues = z.input<typeof companySearchInputSchema>;
-
 interface CompanyFormProps {
-  onSubmit: (values: CompanySearchInput) => void;
-  isLoading: boolean;
+  context: PromptContext;
+  onChange: (patch: Partial<PromptContext>) => void;
 }
 
-export function CompanyForm({ onSubmit, isLoading }: CompanyFormProps) {
-  const form = useForm<FormValues, unknown, CompanySearchInput>({
-    resolver: zodResolver(companySearchInputSchema),
-    defaultValues: { companyName: "", jobTitle: "", sector: "hotel", extraContext: "" },
-    mode: "onSubmit",
-  });
+export function CompanyForm({ context, onChange }: CompanyFormProps) {
+  const preset =
+    SECTOR_PRESETS.find((item) => item.key === context.sector) ?? SECTOR_PRESETS[0];
 
-  const sector = form.watch("sector") as TourismSector;
-  const preset = SECTOR_PRESETS.find((item) => item.key === sector) ?? SECTOR_PRESETS[0];
-  const errors = form.formState.errors;
+  // 입력하는 즉시 검증하되, 아직 비어 있는 칸은 나무라지 않습니다.
+  const issues = React.useMemo(() => {
+    const result = companyFormSchema.safeParse(context);
+    if (result.success) return {} as Record<string, string>;
+    return Object.fromEntries(
+      result.error.issues.map((issue) => [String(issue.path[0]), issue.message]),
+    );
+  }, [context]);
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-      {/* 업종 프리셋 */}
+    <div className="space-y-5">
       <div className="space-y-2">
         <Label>관광 업종 프리셋</Label>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {SECTOR_PRESETS.map((item) => {
-            const active = item.key === sector;
+            const active = item.key === context.sector;
             return (
               <button
                 key={item.key}
                 type="button"
-                onClick={() => form.setValue("sector", item.key, { shouldValidate: true })}
+                onClick={() => onChange({ sector: item.key as TourismSector })}
                 aria-pressed={active}
                 className={cn(
                   "flex flex-col items-start gap-0.5 rounded-lg border p-2.5 text-left transition-colors",
@@ -67,7 +61,6 @@ export function CompanyForm({ onSubmit, isLoading }: CompanyFormProps) {
         <p className="text-xs text-muted-foreground">{preset.lens}</p>
       </div>
 
-      {/* 기업명 */}
       <div className="space-y-2">
         <Label htmlFor="companyName">기업 · 기관명</Label>
         <div className="relative">
@@ -76,63 +69,54 @@ export function CompanyForm({ onSubmit, isLoading }: CompanyFormProps) {
             id="companyName"
             placeholder="예: 하나투어"
             className="pl-9"
-            aria-invalid={Boolean(errors.companyName)}
-            {...form.register("companyName")}
+            value={context.companyName}
+            onChange={(event) => onChange({ companyName: event.target.value })}
+            aria-invalid={Boolean(context.companyName && issues.companyName)}
           />
         </div>
         <ChipRow
           items={preset.sampleCompanies}
-          onPick={(value) => form.setValue("companyName", value, { shouldValidate: true })}
+          onPick={(value) => onChange({ companyName: value })}
         />
-        <FieldError message={errors.companyName?.message} />
+        {context.companyName && issues.companyName ? (
+          <FieldError message={issues.companyName} />
+        ) : null}
       </div>
 
-      {/* 지원 직무 */}
       <div className="space-y-2">
         <Label htmlFor="jobTitle">지원 직무</Label>
         <Input
           id="jobTitle"
           placeholder="예: 상품기획(MD)"
-          aria-invalid={Boolean(errors.jobTitle)}
-          {...form.register("jobTitle")}
+          value={context.jobTitle}
+          onChange={(event) => onChange({ jobTitle: event.target.value })}
+          aria-invalid={Boolean(context.jobTitle && issues.jobTitle)}
         />
-        <ChipRow
-          items={preset.sampleJobs}
-          onPick={(value) => form.setValue("jobTitle", value, { shouldValidate: true })}
-        />
-        <FieldError message={errors.jobTitle?.message} />
+        <ChipRow items={preset.sampleJobs} onPick={(value) => onChange({ jobTitle: value })} />
+        {context.jobTitle && issues.jobTitle ? (
+          <FieldError message={issues.jobTitle} />
+        ) : null}
       </div>
 
-      {/* 추가 정보 */}
       <div className="space-y-2">
-        <Label htmlFor="extraContext">
-          채용공고 발췌 · 참고 정보 <span className="text-muted-foreground">(선택)</span>
+        <Label htmlFor="homepageUrl">
+          기업 홈페이지 주소 <span className="text-muted-foreground">(선택)</span>
         </Label>
-        <Textarea
-          id="extraContext"
-          rows={4}
-          placeholder={
-            "채용공고의 자격요건/우대사항을 붙여넣으면 분석 정확도가 크게 올라갑니다.\n예) 자격요건: 여행상품 기획 경력 2년 이상, 동남아 지역 소싱 경험 우대"
-          }
-          {...form.register("extraContext")}
-        />
-        <FieldError message={errors.extraContext?.message} />
+        <div className="relative">
+          <Globe className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            id="homepageUrl"
+            placeholder="예: hanatour.com"
+            className="pl-9"
+            value={context.homepageUrl}
+            onChange={(event) => onChange({ homepageUrl: event.target.value })}
+          />
+        </div>
+        <p className="text-xs text-muted-foreground">
+          입력하면 <strong>홈페이지 안쪽 페이지까지</strong> 한 번에 훑는 검색 링크가 추가됩니다.
+        </p>
       </div>
-
-      <Button type="submit" disabled={isLoading} className="w-full" size="lg">
-        {isLoading ? (
-          <>
-            <Loader2 className="animate-spin" />
-            기업 정보를 수집하는 중…
-          </>
-        ) : (
-          <>
-            <Search />
-            기업 분석 시작
-          </>
-        )}
-      </Button>
-    </form>
+    </div>
   );
 }
 
@@ -154,7 +138,6 @@ function ChipRow({ items, onPick }: { items: string[]; onPick: (value: string) =
   );
 }
 
-function FieldError({ message }: { message?: string }) {
-  if (!message) return null;
+function FieldError({ message }: { message: string }) {
   return <p className="text-xs font-medium text-destructive">{message}</p>;
 }

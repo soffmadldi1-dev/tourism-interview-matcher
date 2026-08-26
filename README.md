@@ -1,288 +1,176 @@
-# 관광 면접 스토리 매처 (Tourism Interview Story Matcher)
+# 관광 취업 준비 워크벤치
 
-관광 산업 취업 준비생·이직자를 위한 **기업 분석 → 경험 매칭 → 면접 답변 생성** 툴입니다.
+관광 산업 취업 준비생을 위한 **무료** 취업 준비 도구입니다.
+기업 조사용 검색 링크를 만들어 주고, 이력서·자기소개서·면접 스크립트를 만드는
+**완성형 프롬프트**를 제공합니다.
 
-홈페이지의 인재상 문구만 외워 가는 준비를 벗어나, 기업의 **최근 전략과 현안**을 실시간 웹 검색으로 파악하고
-지원자의 실제 경험을 그 현안과 1:1로 연결한 면접 스크립트를 만듭니다.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsoffmadldi1-dev%2Ftourism-interview-matcher&project-name=tourism-interview-matcher&repository-name=tourism-interview-matcher&env=ANTHROPIC_API_KEY,ANTHROPIC_MODEL,TAVILY_API_KEY,SERPER_API_KEY,PERPLEXITY_API_KEY,SEARCH_PROVIDER&envDescription=Claude%20API%20%ED%82%A4%EB%8A%94%20%ED%95%84%EC%88%98%EC%9E%85%EB%8B%88%EB%8B%A4.%20%EA%B2%80%EC%83%89%20%ED%82%A4%EB%8A%94%20%EB%B9%84%EC%9B%8C%EB%91%90%EB%A9%B4%20Claude%20%EB%82%B4%EC%9E%A5%20%EA%B2%80%EC%83%89%EC%9C%BC%EB%A1%9C%20%EB%8F%99%EC%9E%91%ED%95%A9%EB%8B%88%EB%8B%A4.&envLink=https%3A%2F%2Fgithub.com%2Fsoffmadldi1-dev%2Ftourism-interview-matcher%23%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98)
+> **로그인 없음 · 결제 없음 · API 키 없음.**
+> 교육생에게 URL만 전달하면 바로 사용할 수 있습니다.
 
 ---
 
-## 1. 무엇을 하는가
+## 1. 어떻게 동작하는가
 
-| 단계 | 이름 | 산출물 |
+이 도구는 **AI를 직접 호출하지 않습니다.** 대신 두 가지를 대신해 줍니다.
+
+| 이 도구가 하는 일 | 사용자가 하는 일 |
+| --- | --- |
+| 기업명으로 **검색 링크 24개** 자동 생성 | 링크를 열어 자료를 훑고 복사 |
+| 모은 자료를 넣은 **완성형 프롬프트** 조립 | 복사해서 claude.ai 채팅창에 붙여넣기 |
+
+검색 링크를 만드는 것은 단순한 URL 조립이고, 프롬프트를 만드는 것은 문자열 조합입니다.
+**둘 다 AI가 필요 없는 작업**이라 비용이 0원입니다. 실제 "생각"은 사용자가 무료로 쓸 수 있는
+[claude.ai](https://claude.ai) 채팅에서 이루어집니다.
+
+```
+[이 도구]                              [claude.ai 채팅]
+기업명 입력                                   
+   ↓                                        
+검색 링크 생성  ──▶  사용자가 자료 수집  ──▶  프롬프트 붙여넣기  ──▶  분석 결과
+   ↓                                                                    │
+프롬프트 조립  ◀────────  결과를 다시 붙여넣기  ◀────────────────────────┘
+   ↓
+이력서·자소서·면접 프롬프트 활성화
+```
+
+---
+
+## 2. 사용 흐름 (교육생 안내용)
+
+### 1단계 · 기업 정보 입력
+업종 프리셋을 고르고 기업명·직무를 입력합니다. 홈페이지 주소를 넣으면
+`site:` 검색으로 **홈페이지 안쪽 페이지까지** 훑는 링크가 추가됩니다.
+
+### 2단계 · 자료 수집
+오른쪽에 나타난 검색 링크를 엽니다. **"필수 N개 한번에 열기"** 버튼을 누르면
+핵심 링크가 새 탭으로 한꺼번에 열립니다.
+
+| 검색 그룹 | 무엇을 찾는가 |
+| --- | --- |
+| 회사가 스스로 말하는 것 | 인재상·미션·비전, 채용공고 원문, 홈페이지 내부 검색 |
+| 최근 활동 · 행사 · 현안 | 네이버/구글 뉴스, 신규 사업·전략 발표, 행사·수상 |
+| 한 걸음 더 들어가기 | (기업) DART 공시·실적·리뷰 / (공공기관) 알리오·사업계획·국정과제 |
+| 채용공고 원문 찾기 | 사람인, 잡코리아, 워크넷 |
+
+쓸 만한 내용을 복사해서 **'2. 자료' 탭 → ① 수집한 자료** 칸에 붙여넣습니다.
+정리할 필요 없이 그대로 붙여넣으면 됩니다. **300자 이상** 모으면 품질이 확 올라갑니다.
+
+### 3단계 · 기업 분석
+오른쪽 **"1. 기업 분석 리포트 만들기"** 프롬프트를 복사 → claude.ai에 붙여넣기 →
+받은 답변 **전체**를 **'2. 자료' 탭 → ② 기업 분석 결과** 칸에 붙여넣습니다.
+
+이 칸을 채우면 **나머지 5개 프롬프트가 모두 활성화**됩니다.
+
+### 4단계 · 서류와 면접 준비
+'3. 나' 탭에 강점·경험·이력서·자소서 문항을 입력한 뒤, 필요한 프롬프트를 복사해서 사용합니다.
+
+---
+
+## 3. 제공되는 프롬프트 6종
+
+| # | 프롬프트 | 언제 쓰는가 |
 | --- | --- | --- |
-| Step 1 | 기업 분석 (Company Intelligence) | 미션·비전·인재상 해석 / 핵심 사업 모델 / 최근 1~2년 신규 전략 / 최근 이슈·보도자료 / 면접관 관점 평가 키워드 / 주의할 현안 / 출처 |
-| Step 2 | 지원자 프로필 (Candidate Profiling) | 강점 태그, 강점 상세, 이력·프로젝트·아르바이트 경험, 지원동기 초안, 톤앤매너 |
-| Step 3 | 매칭 & 생성 (Matching Engine) | 맞춤형 1분 자기소개 / 기업 니즈↔경험 교차 매칭표 / STAR 답변 3개 / 지원동기 + 기여 로드맵 / 예상 꼬리질문·방어 논리 3개 / 사용 전 확인사항 |
+| 1 | 기업 분석 리포트 만들기 | 자료를 모은 직후. 모든 것의 출발점 |
+| 2 | 이력서 기업 맞춤형으로 재구성 | 우선순위 재배치 + 표현 교체(Before→After) + 빈칸 진단 |
+| 3 | 자기소개서 문항별로 작성 | 실제 자소서 문항을 알고 있을 때 |
+| 4 | 1분 자기소개 스크립트 | 기업 니즈↔경험 매칭표 + 55~70초 스크립트 |
+| 5 | 핵심 경험 STAR 답변 | 경험 기반 질문 3개 + STAR 구조 답변 |
+| 6 | 압박 꼬리질문 방어 논리 | 약점 진단 + 압박질문 5개 + 역질문 3개 |
 
-**업종 프리셋**: 호텔·리조트 / 여행사·OTA / 공공기관·DMO / MICE / 항공·교통 / 기타
-— 프리셋마다 검색 키워드, 분석 관점(lens), 추천 강점 태그가 다르게 적용됩니다.
+### 프롬프트 설계에서 신경 쓴 것
 
-**톤앤매너**: 자신감 넘치는 · 차분하고 전문적인 · 글로벌 지향적인
-
-**내보내기**: 섹션별 복사 / 전체 복사 / 마크다운 다운로드 / PDF 저장(인쇄)
-
----
-
-## 2. 기술 스택
-
-- **Next.js 15 (App Router) + TypeScript**
-- **Tailwind CSS 3 + shadcn/ui 패턴** (Radix UI primitives, `cva`, `tailwind-merge`)
-- **Anthropic Claude API** (`@anthropic-ai/sdk`) — 기본 모델 `claude-opus-5`
-  - Structured Outputs (`output_config.format` + `zodOutputFormat`) 로 JSON 스키마 강제
-  - 서버 도구 `web_search_20260209` 로 검색 API 없이도 동작
-- **실시간 웹 검색**: Tavily → Serper(Google) → Perplexity → Claude 내장 web_search → 사전지식 (자동 폴백)
-- **React Hook Form + Zod** (입력 검증, 클라이언트/서버 스키마 공유)
-- **Lucide React** (아이콘)
+- **"기업 현안 → 내 경험" 순서로 사고하게 강제** — 자기 자랑이 아니라 "이 회사에 지금 필요한 사람"이라는 논리가 나옵니다
+- **창작 금지 규칙** — 사용자가 주지 않은 숫자·성과를 지어내지 말고 `[실제 수치 기입]` 표시를 남기도록 지시
+- **정직한 gap 표시** — 매칭표에 최소 1개는 '부족'으로 표시하고 방어 논리를 함께 제시
+- **업종별 관점 주입** — 호텔/OTA/공공기관/MICE/항공별로 서로 다른 분석 렌즈 적용
+- **톤앤매너 3종** — 자신감 넘치는 / 차분하고 전문적인 / 글로벌 지향적인
 
 ---
 
-## 3. 빠른 시작
+## 4. 기술적 특징
+
+- **완전 정적 사이트** — 서버 함수가 하나도 없습니다 (`next build` 결과 전부 `○ Static`)
+- **데이터가 외부로 나가지 않음** — 입력값은 브라우저 `localStorage`에만 저장됩니다.
+  새로고침하거나 탭을 닫아도 작업이 유지되고, 서버로 전송되는 것은 없습니다
+- **무료 호스팅 가능** — Vercel Hobby 플랜에서 트래픽 제한 외에 비용이 발생하지 않습니다
+- **워크북 내보내기** — 검색 링크 + 프롬프트 6종 전체를 마크다운 파일로 저장하거나 인쇄/PDF로 배포 가능
+
+### 기술 스택
+
+Next.js 15 (App Router) · TypeScript · Tailwind CSS · Radix UI (shadcn/ui 패턴) · Zod · Lucide React
+
+### 폴더 구조
+
+```
+├── app/
+│   ├── globals.css              # 디자인 토큰 + 인쇄(PDF) 스타일
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── ui/                      # shadcn/ui 스타일 프리미티브
+│   ├── workspace.tsx            # 2-Pane 레이아웃 + 상태 관리
+│   ├── company-form.tsx         # 1단계 입력
+│   ├── material-form.tsx        # 2단계 입력 (수집 자료 / 분석 결과)
+│   ├── profile-form.tsx         # 3단계 입력
+│   ├── search-launcher.tsx      # 검색 링크 카드
+│   └── prompt-library.tsx       # 프롬프트 카드 6종
+└── lib/
+    ├── search-links.ts          # 검색 URL 빌더 (업종별 분기)
+    ├── prompt-templates.ts      # 프롬프트 템플릿 6종  ← 핵심 자산
+    ├── presets.ts               # 업종·톤앤매너 프리셋
+    ├── storage.ts               # localStorage 저장/복원
+    ├── export.ts                # 워크북 마크다운 · 클립보드 · 인쇄
+    ├── schemas.ts               # Zod 입력 검증
+    └── types.ts
+```
+
+---
+
+## 5. 로컬 실행
 
 ```bash
 npm install
 ```
 
 ```bash
-cp .env.example .env.local
-```
-
-`.env.local` 을 열어 **`ANTHROPIC_API_KEY` 를 반드시 채웁니다.** (나머지는 선택)
-
-```bash
 npm run dev
 ```
 
-브라우저에서 <http://localhost:3000> 접속.
+<http://localhost:3000> 접속. **환경 변수 설정이 전혀 필요 없습니다.**
 
-> 기본 포트가 사용 중이면 `npm run dev -- --port 3100` 처럼 지정하세요.
+빌드 검증:
 
-### 환경 변수
+```bash
+npm run typecheck && npm run build
+```
 
-| 변수 | 필수 | 설명 |
+---
+
+## 6. 배포
+
+GitHub에 푸시하면 Vercel이 자동으로 재배포합니다.
+환경 변수가 없으므로 별도 설정 없이 임포트 → Deploy 만 하면 됩니다.
+
+---
+
+## 7. AI API 버전 (참고)
+
+Claude API를 직접 호출해서 검색·분석·생성을 **전부 자동화**하는 버전이
+`ai-api-version` 브랜치에 보존되어 있습니다.
+
+| | 현재 버전 (main) | API 버전 (ai-api-version) |
 | --- | --- | --- |
-| `ANTHROPIC_API_KEY` | ✅ | [console.anthropic.com](https://console.anthropic.com/settings/keys) 에서 발급 |
-| `ANTHROPIC_MODEL` | | 기본값 `claude-opus-5`. 변경 시 `web_search_20260209` 지원 모델인지 확인하세요 |
-| `TAVILY_API_KEY` | | 1순위 검색 공급자 ([app.tavily.com](https://app.tavily.com)) |
-| `SERPER_API_KEY` | | 2순위 — Google SERP ([serper.dev](https://serper.dev)) |
-| `PERPLEXITY_API_KEY` | | 3순위 |
-| `SEARCH_PROVIDER` | | `auto`(기본) / `tavily` / `serper` / `perplexity` / `native` 로 강제 지정 |
+| 비용 | 0원 | 1회당 약 200~400원 (크레딧 차감) |
+| 필요한 것 | 없음 | Anthropic API 키 + 크레딧 충전 |
+| 사용자 작업 | 링크 열기 + 복사·붙여넣기 | 버튼 클릭 한 번 |
+| 적합한 용도 | **다수에게 무료 배포** | 소수 대상 컨설팅 자동화 |
 
-**검색 키가 하나도 없어도 동작합니다.** Claude 내장 `web_search` 서버 도구로 자동 폴백합니다.
-다만 외부 검색 API를 붙이면 근거 수집량이 늘어 분석 품질이 올라갑니다.
+교육생 배포용으로는 현재 버전이, 본인의 컨설팅 업무 자동화에는 API 버전이 적합합니다.
 
 ---
 
-## 4. 폴더 구조
+## 8. 면책
 
-```
-tourism-interview-matcher/
-├── app/
-│   ├── api/
-│   │   ├── company-search/route.ts   # Step 1: 검색 + 구조화
-│   │   ├── generate-story/route.ts   # Step 3: 매칭 + 스토리 생성
-│   │   └── health/route.ts           # 환경 설정 점검
-│   ├── globals.css                   # 디자인 토큰 + 인쇄(PDF) 스타일
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/
-│   ├── ui/                           # shadcn/ui 스타일 프리미티브
-│   ├── workspace.tsx                 # 2-Pane 레이아웃 + 상태 오케스트레이션
-│   ├── company-form.tsx              # Step 1 입력 폼
-│   ├── candidate-form.tsx            # Step 2 입력 폼
-│   ├── company-intel-report.tsx      # Step 1 리포트
-│   ├── story-report.tsx              # Step 3 리포트
-│   └── copy-button.tsx
-├── lib/
-│   ├── prompts/
-│   │   ├── company.ts                # 기업 분석 프롬프트 (리서치 / 구조화 분리)
-│   │   └── story.ts                  # 매칭·스토리 생성 프롬프트
-│   ├── schemas.ts                    # Zod 스키마 (단일 원천)
-│   ├── types.ts                      # 파생 타입 + API 계약
-│   ├── search.ts                     # 검색 공급자 폴백 체인
-│   ├── anthropic.ts                  # 클라이언트 팩토리 + 에러 정규화
-│   ├── api.ts                        # Route Handler 응답 헬퍼
-│   ├── presets.ts                    # 업종·톤앤매너 프리셋
-│   ├── export.ts                     # 마크다운 / 클립보드 / 다운로드 / 인쇄
-│   └── utils.ts
-└── .env.example
-```
-
----
-
-## 5. 아키텍처 노트
-
-### 왜 기업 분석을 2단계로 나눴는가
-
-```
-[1] 근거 수집        [2] 구조화
-검색 API 또는    →   Claude (도구 없음)
-Claude web_search    + structured outputs → CompanyIntel JSON
-```
-
-서버 도구(`web_search`)와 structured outputs 를 한 호출에 섞지 않고 분리했습니다.
-
-- 도구 호출은 `pause_turn` 으로 중단될 수 있어 재개 루프가 필요합니다 (`runNativeResearch` 가 처리).
-- "근거 → 구조화"를 분리하면 **모델이 근거 없이 지어낸 내용을 걸러내기 쉽습니다.** 구조화 단계 프롬프트는
-  "위 근거에 없는 사실을 만들지 말 것"을 명시하고, 근거가 없으면 `confidence: "low"` 를 강제합니다.
-
-### 프롬프트 설계 원칙
-
-- `lib/prompts/company.ts` — 사실/추론 구분, `(추정)` 표기 강제, URL 창작 금지, 업종별 관점(lens) 주입
-- `lib/prompts/story.ts` — **"기업 현안 → 지원자 경험" 순서로 사고**하게 강제.
-  지원자가 제공하지 않은 숫자·회사명·성과는 창작 금지이며, 부족하면 `[실제 수치 기입]` 플레이스홀더를 남기고
-  `cautions` 에 기록합니다. 매칭표에는 최소 1개의 `gap` 을 정직하게 표시하도록 지시합니다.
-
-### 폴백 · 에러 처리
-
-| 상황 | 동작 |
-| --- | --- |
-| 외부 검색 키 없음 | Claude 내장 `web_search` 로 진행, 배지에 "Claude 내장 웹검색" 표기 |
-| 외부 검색 API 실패 | 다음 순위 공급자 → 내장 검색 → 사전지식 순으로 폴백, 실패 사유를 UI 안내 문구로 노출 |
-| 검색 완전 실패 | 에러로 끝내지 않고 `confidence: "low"` + 교차 확인 경고와 함께 결과 제공 |
-| 일부 쿼리만 실패 | 성공한 결과로 계속 진행 (`Promise.allSettled`) |
-| API 키 없음/무효 | `MISSING_API_KEY` — 조치 방법 힌트와 함께 안내 |
-| Rate limit | `RATE_LIMITED` (HTTP 429) — 재시도 안내 |
-| 모델 응답 거부 | `stop_reason: "refusal"` 감지 → 사유와 함께 안내 |
-| 응답 잘림 | `stop_reason: "max_tokens"` 감지 → 입력 축소 안내 |
-
-에러는 모두 `{ ok: false, error: { code, message, hint } }` 형태로 통일되어 있습니다 (`lib/types.ts`).
-
----
-
-## 6. API 명세
-
-### `POST /api/company-search`
-
-```jsonc
-// 요청
-{
-  "companyName": "하나투어",
-  "jobTitle": "상품기획(MD)",
-  "sector": "ota",            // hotel | ota | public | mice | transport | other
-  "extraContext": ""          // 선택: 채용공고 발췌 등
-}
-```
-
-```jsonc
-// 응답 (성공)
-{
-  "ok": true,
-  "data": {
-    "companyName": "하나투어",
-    "jobTitle": "상품기획(MD)",
-    "sector": "ota",
-    "overview": "...",
-    "identity": { "mission": "...", "vision": "...", "talentProfile": [...] },
-    "business": { "coreModels": [...], "newStrategies": [...] },
-    "recentIssues": [...],
-    "interviewerKeywords": [...],
-    "watchOuts": [...],
-    "sources": [...],
-    "confidence": "medium",
-    "dataAsOf": "2026-08",
-    "retrieval": { "provider": "tavily", "resultCount": 18, "fallbackUsed": false, "notice": "" }
-  }
-}
-```
-
-### `POST /api/generate-story`
-
-```jsonc
-// 요청
-{
-  "companyIntel": { /* Step 1 응답의 data (retrieval 제외) */ },
-  "sector": "ota",
-  "candidate": {
-    "strengthTags": ["여행상품 기획", "현지 파트너 커뮤니케이션"],
-    "strengthDetail": "",
-    "experiences": "2024.03~2025.02 ...",
-    "motivationDraft": "",
-    "tone": "calm"            // confident | calm | global
-  }
-}
-```
-
-응답 `data` 는 `oneMinutePitch` / `matchMatrix` / `starAnswers` / `motivation` / `followUps` / `cautions` 를 담습니다.
-
-### `GET /api/health`
-
-키 설정 여부만 boolean 으로 확인합니다 (키 값은 절대 반환하지 않습니다).
-
----
-
-## 7. 테스트 가이드
-
-### 7-1. 환경 점검
-
-```bash
-curl http://localhost:3000/api/health
-```
-
-`anthropicKey: true` 인지 확인합니다. `false` 면 `.env.local` 을 저장한 뒤 **개발 서버를 재시작**하세요.
-
-### 7-2. 타입 검사 · 빌드
-
-```bash
-npm run typecheck
-```
-
-```bash
-npm run build
-```
-
-### 7-3. API 단독 호출
-
-```bash
-curl -X POST http://localhost:3000/api/company-search -H "Content-Type: application/json" -d "{\"companyName\":\"하나투어\",\"jobTitle\":\"상품기획\",\"sector\":\"ota\",\"extraContext\":\"\"}"
-```
-
-### 7-4. UI 시나리오 체크리스트
-
-| # | 시나리오 | 기대 결과 |
-| --- | --- | --- |
-| 1 | 빈 폼으로 "기업 분석 시작" | "기업명을 2자 이상 입력해 주세요." 등 한국어 검증 메시지 |
-| 2 | 업종 프리셋 전환 | 샘플 기업/직무 칩, 분석 관점 문구, 추천 강점 태그가 함께 바뀜 |
-| 3 | 샘플 칩 클릭 | 해당 입력란이 자동으로 채워짐 |
-| 4 | 기업 분석 실행 | 우측에 단계별 로딩 인디케이터 → 분석 리포트, 좌측 탭이 "2. 내 프로필"로 자동 전환 |
-| 5 | 분석 완료 전 프로필 탭 | 탭 비활성화, 폼 입력 불가 |
-| 6 | 경험 30자 미만으로 제출 | "주요 이력/프로젝트를 30자 이상 구체적으로 입력해 주세요." |
-| 7 | 스토리 생성 | 1분 자기소개 → 매칭표 → STAR → 지원동기 → 꼬리질문 순으로 렌더링 |
-| 8 | 톤앤매너 변경 후 재생성 | 문체가 달라진 스크립트 생성 |
-| 9 | "마크다운 저장" | `기업명_직무_면접스토리.md` 다운로드 |
-| 10 | "PDF로 저장" | 인쇄 대화상자 — 좌측 입력 패널·버튼은 제외되고 리포트만 출력 |
-| 11 | 검색 키 없이 실행 | "Claude 내장 웹검색" 배지 + 안내 문구 표시, 정상 동작 |
-| 12 | `ANTHROPIC_API_KEY` 제거 후 실행 | "Claude API 키가 설정되지 않았습니다" + `.env.local` 안내 |
-| 13 | 모바일 폭(375px) | 단일 컬럼, 가로 스크롤 없음, 헤더 고정 |
-
-### 7-5. 검증 완료 상태 (2026-08-25)
-
-- `npm run typecheck` 통과, `npm run build` 성공 (4개 라우트)
-- 로컬 dev 실행 후 시나리오 1·3·4·9·12·13 브라우저 검증 완료
-- 리포트 렌더링(Step 1 / Step 3)과 마크다운 내보내기는 목(mock) 응답으로 렌더 경로 검증 완료
-- ⚠️ **실제 Claude API 호출 경로는 미검증** — 이 환경에 API 키가 없었습니다.
-  키를 넣고 7-1 → 7-3 → 7-4 순으로 한 번 돌려보세요.
-
----
-
-## 8. 알려진 제약 · 다음 단계
-
-- **정확도 한계**: 웹 검색 결과와 모델 추론에 의존하므로, 비상장·소규모 기업일수록 `confidence` 가 낮게 나옵니다.
-  리포트의 신뢰도 배지와 출처를 반드시 확인하세요.
-- **응답 시간**: 검색 + 2회 모델 호출로 30초~2분 정도 걸립니다. Vercel 배포 시 `maxDuration = 300` 이 필요합니다
-  (Hobby 플랜은 60초 제한이므로 Pro 이상 권장).
-- **비용**: 1회 분석 + 스토리 생성에 Claude Opus 5 기준 수십 원~수백 원 수준의 토큰이 소모됩니다.
-  비용을 낮추려면 `.env.local` 에서 `ANTHROPIC_MODEL=claude-sonnet-5` 로 바꾸세요.
-- **모델 거부 폴백 미적용**: 서버사이드 `fallbacks` 파라미터는 넣지 않았습니다. 이 용도에서 거부가 발생할 가능성이
-  낮고 베타 파라미터 의존을 피하기 위해서이며, 대신 `stop_reason: "refusal"` 을 감지해 사용자에게 안내합니다.
-- **다음 단계 후보**: 결과 저장/불러오기(로컬스토리지 또는 DB), 여러 기업 비교, 음성 모의면접,
-  자기소개서 문항별 초안 생성, 실제 채용공고 URL 파싱.
-
----
-
-## 9. 면책
-
-AI가 생성한 **초안**입니다. 기업 정보는 공식 홈페이지·채용공고에서, 본인 경험은 실제 사실 여부를
-반드시 직접 확인한 뒤 사용하세요. 확인되지 않은 성과를 면접에서 말하는 것은 가장 큰 리스크입니다.
+AI가 만든 결과는 **초안**입니다. 기업 정보는 공식 홈페이지·채용공고에서, 본인 경험은
+실제 사실 여부를 반드시 직접 확인한 뒤 사용하세요.
+확인되지 않은 성과를 면접에서 말하는 것이 가장 큰 리스크입니다.

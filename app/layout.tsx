@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "관광 면접 스토리 매처 | 기업 분석 × 경험 매칭",
+  title: "관광 취업 준비 워크벤치 | 기업 조사부터 면접 준비까지",
   description:
-    "관광 산업 취업·이직 준비생을 위한 기업 분석 및 면접 스토리 매칭 툴. 실시간 웹 검색으로 기업 현안을 파악하고, 내 경험과 1:1로 연결한 면접 답변을 만듭니다.",
+    "관광 산업 취업 준비생을 위한 무료 도구. 기업 조사용 검색 링크를 만들어 주고, 이력서·자기소개서·면접 스크립트를 만드는 완성형 프롬프트를 제공합니다. 로그인도 결제도 필요 없습니다.",
 };
 
 export const viewport: Viewport = {
