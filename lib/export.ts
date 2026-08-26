@@ -45,10 +45,6 @@ export function downloadMarkdown(filename: string, content: string): void {
   URL.revokeObjectURL(url);
 }
 
-export function printPage(): void {
-  window.print();
-}
-
 export function safeFilename(...parts: string[]): string {
   return parts
     .filter(Boolean)
@@ -81,12 +77,12 @@ export function buildWorkbook(ctx: PromptContext): string {
     lines.push("## 자료 수집 링크");
     lines.push("");
     for (const group of groups) {
-      lines.push(`### ${group.title}`);
-      lines.push(`${group.description}`);
+      lines.push(`### ${group.step}. ${group.title}`);
+      lines.push(group.goal);
       lines.push("");
       for (const link of group.links) {
         lines.push(`- ${link.essential ? "**[필수]** " : ""}[${link.label}](${link.url})`);
-        lines.push(`  - ${link.purpose}`);
+        lines.push(`  - 복사할 것: ${link.copyThis}`);
       }
       lines.push("");
     }

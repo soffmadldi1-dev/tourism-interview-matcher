@@ -9,7 +9,7 @@ import { EMPTY_CONTEXT, type PromptContext } from "@/lib/types";
  * 서버로 전송되는 것은 없습니다 — 데이터는 사용자 브라우저 밖으로 나가지 않습니다.
  */
 
-const STORAGE_KEY = "tourism-matcher:draft:v1";
+const STORAGE_KEY = "tourism-matcher:draft:v2";
 
 export function loadContext(): PromptContext {
   if (typeof window === "undefined") return EMPTY_CONTEXT;
@@ -20,11 +20,7 @@ export function loadContext(): PromptContext {
 
     const parsed = JSON.parse(raw) as Partial<PromptContext>;
     // 저장 형식이 바뀌었을 수 있으니 기본값 위에 덮어씁니다.
-    return {
-      ...EMPTY_CONTEXT,
-      ...parsed,
-      strengthTags: Array.isArray(parsed.strengthTags) ? parsed.strengthTags : [],
-    };
+    return { ...EMPTY_CONTEXT, ...parsed };
   } catch {
     return EMPTY_CONTEXT;
   }

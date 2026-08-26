@@ -19,27 +19,29 @@ export type ToneKey = "confident" | "calm" | "global";
 
 /**
  * 프롬프트를 조립하는 데 필요한 모든 입력값.
- * 좌측 입력 폼의 상태가 그대로 여기에 담깁니다.
+ *
+ * 입력 항목은 의도적으로 최소화했습니다.
+ * 이력서·자기소개서를 통째로 붙여넣으면 강점과 경험은 그 안에 이미 들어 있으므로,
+ * 같은 내용을 두 번 적게 하지 않습니다.
  */
 export interface PromptContext {
-  /* 1단계 — 기업 */
+  /* ① 기업 정보 */
   companyName: string;
   jobTitle: string;
   sector: TourismSector;
   homepageUrl: string;
 
-  /* 2단계 — 수집한 자료 */
-  /** 검색 링크로 직접 모아서 붙여넣은 원본 자료 */
+  /* ② 조사 자료 */
+  /** 검색 링크를 열어 직접 복사해 온 원본 자료 */
   collectedMaterial: string;
   /** '기업 분석' 프롬프트를 돌려서 받은 결과 */
   companyAnalysis: string;
 
-  /* 3단계 — 나 */
-  strengthTags: string[];
-  experiences: string;
-  resumeDraft: string;
-  coverLetterQuestions: string;
-  coverLetterDraft: string;
+  /* ③ 내 서류 */
+  /** 수업에서 만든 이력서 전문 */
+  resumeText: string;
+  /** 수업에서 만든 자기소개서 (문항 + 답변) */
+  coverLetterText: string;
   tone: ToneKey;
 }
 
@@ -50,13 +52,13 @@ export const EMPTY_CONTEXT: PromptContext = {
   homepageUrl: "",
   collectedMaterial: "",
   companyAnalysis: "",
-  strengthTags: [],
-  experiences: "",
-  resumeDraft: "",
-  coverLetterQuestions: "",
-  coverLetterDraft: "",
+  resumeText: "",
+  coverLetterText: "",
   tone: "calm",
 };
 
 /** 좌측 입력 패널의 단계 */
 export type InputStep = "company" | "material" | "profile";
+
+/** 우측 결과 패널의 단계 */
+export type OutputStep = "search" | "analyze" | "document" | "interview";
