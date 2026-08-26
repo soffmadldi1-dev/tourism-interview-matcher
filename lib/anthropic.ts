@@ -61,6 +61,13 @@ export function toApiError(err: unknown): ApiError {
   }
 
   if (err instanceof Anthropic.BadRequestError) {
+    if (/credit balance is too low/i.test(err.message)) {
+      return {
+        code: "UPSTREAM_ERROR",
+        message: "Anthropic 계정의 크레딧이 부족합니다.",
+        hint: "console.anthropic.com → Settings → Billing 에서 결제 수단을 등록하고 크레딧을 충전한 뒤 다시 시도하세요.",
+      };
+    }
     return {
       code: "UPSTREAM_ERROR",
       message: `요청 형식 오류: ${err.message}`,
