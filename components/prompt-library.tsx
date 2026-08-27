@@ -1,8 +1,19 @@
 "use client";
 
 import * as React from "react";
-import { ArrowRight, Check, Copy, ExternalLink, Eye, EyeOff, Link2, Lock } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Copy,
+  ExternalLink,
+  Eye,
+  EyeOff,
+  FileCode2,
+  Link2,
+  Lock,
+} from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -100,6 +111,12 @@ function PromptCard({
             {template.order}
           </span>
           {template.title}
+          {template.producesHtml ? (
+            <Badge variant="secondary" className="mt-0.5 shrink-0">
+              <FileCode2 className="h-3 w-3" />
+              HTML 파일
+            </Badge>
+          ) : null}
         </CardTitle>
         <p className="pl-7 text-xs leading-relaxed text-muted-foreground">{template.when}</p>
       </CardHeader>
