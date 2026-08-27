@@ -1,15 +1,11 @@
 "use client";
 
-import * as React from "react";
-import { Check, Copy, ExternalLink, FileUser, Lightbulb, MessageSquareText } from "lucide-react";
+import { FileUser, MessageSquareText } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { TONE_PRESETS } from "@/lib/presets";
-import { RECALL_PROMPT } from "@/lib/prompt-templates";
-import { copyToClipboard } from "@/lib/export";
 import type { PromptContext, ToneKey } from "@/lib/types";
 
 interface ProfileFormProps {
@@ -32,9 +28,7 @@ const COVER_LETTER_PLACEHOLDER = `수업에서 만든 자기소개서를 그대�
 
 export function ProfileForm({ context, onChange }: ProfileFormProps) {
   return (
-    <div className="space-y-4">
-      <RecallHelper />
-
+    <div className="space-y-5">
       {/* 이력서 */}
       <div className="space-y-2">
         <Label htmlFor="resumeText" className="flex items-center gap-1.5">
@@ -45,7 +39,7 @@ export function ProfileForm({ context, onChange }: ProfileFormProps) {
         </p>
         <Textarea
           id="resumeText"
-          rows={12}
+          rows={13}
           placeholder={RESUME_PLACEHOLDER}
           className="text-[13px] leading-relaxed"
           value={context.resumeText}
@@ -64,7 +58,7 @@ export function ProfileForm({ context, onChange }: ProfileFormProps) {
         </p>
         <Textarea
           id="coverLetterText"
-          rows={10}
+          rows={11}
           placeholder={COVER_LETTER_PLACEHOLDER}
           className="text-[13px] leading-relaxed"
           value={context.coverLetterText}
@@ -90,59 +84,6 @@ export function ProfileForm({ context, onChange }: ProfileFormProps) {
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
-      </div>
-    </div>
-  );
-}
-
-/** 수업에서 만든 서류를 Claude 채팅 기록에서 꺼내오는 방법 안내 */
-function RecallHelper() {
-  const [copied, setCopied] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!copied) return;
-    const timer = setTimeout(() => setCopied(false), 2000);
-    return () => clearTimeout(timer);
-  }, [copied]);
-
-  async function handleCopy() {
-    if (await copyToClipboard(RECALL_PROMPT)) setCopied(true);
-  }
-
-  return (
-    <div className="space-y-2.5 rounded-lg border border-primary/30 bg-primary/5 p-3">
-      <p className="flex items-center gap-1.5 text-[13px] font-semibold text-primary">
-        <Lightbulb className="h-4 w-4" />
-        수업 때 만든 서류를 찾는 방법
-      </p>
-
-      <ol className="space-y-1 text-xs leading-relaxed text-foreground/80">
-        <li>
-          <strong>1.</strong> Claude에 접속해 <strong>왼쪽 대화 목록</strong>에서 수업 때 쓴 대화를
-          찾습니다.
-        </li>
-        <li>
-          <strong>2.</strong> 그 대화창에 아래 문장을 붙여넣습니다.
-        </li>
-        <li>
-          <strong>3.</strong> 다시 출력된 이력서·자기소개서를 복사해 아래 칸에 넣습니다.
-        </li>
-      </ol>
-
-      <p className="rounded-md border border-border bg-background p-2 text-[11.5px] leading-relaxed text-muted-foreground">
-        {RECALL_PROMPT}
-      </p>
-
-      <div className="flex flex-wrap gap-2">
-        <Button size="sm" variant="outline" onClick={handleCopy}>
-          {copied ? <Check className="text-emerald-600" /> : <Copy />}
-          {copied ? "복사됨!" : "이 문장 복사"}
-        </Button>
-        <Button size="sm" variant="ghost" asChild>
-          <a href="https://claude.ai/recents" target="_blank" rel="noopener noreferrer">
-            <ExternalLink />내 대화 목록 열기
-          </a>
-        </Button>
       </div>
     </div>
   );

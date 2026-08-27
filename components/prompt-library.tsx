@@ -5,11 +5,12 @@ import {
   ArrowRight,
   Check,
   Copy,
+  CornerDownRight,
   ExternalLink,
   Eye,
   EyeOff,
   FileCode2,
-  Link2,
+  Gift,
   Lock,
 } from "lucide-react";
 
@@ -65,7 +66,6 @@ function PromptCard({
   const [open, setOpen] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
   const [failed, setFailed] = React.useState(false);
-  const [linkCopied, setLinkCopied] = React.useState(false);
 
   const missing = missingFields(template, context);
   const ready = missing.length === 0;
@@ -80,20 +80,10 @@ function PromptCard({
     return () => clearTimeout(timer);
   }, [copied, failed]);
 
-  React.useEffect(() => {
-    if (!linkCopied) return;
-    const timer = setTimeout(() => setLinkCopied(false), 2200);
-    return () => clearTimeout(timer);
-  }, [linkCopied]);
-
   async function handleCopy() {
     const succeeded = await copyToClipboard(prompt);
     if (succeeded) setCopied(true);
     else setFailed(true);
-  }
-
-  async function handleCopyLink() {
-    if (await copyToClipboard(CLAUDE_URL)) setLinkCopied(true);
   }
 
   return (
@@ -111,14 +101,36 @@ function PromptCard({
             {template.order}
           </span>
           {template.title}
+        </CardTitle>
+
+        {/* 무엇을 받게 되는지 */}
+        <div className="flex items-start gap-1.5 pl-7 pt-1">
+          <Gift className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+          <p className="text-xs font-medium leading-relaxed text-foreground/80">
+            {template.outcome}
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5 pl-7 pt-1.5">
           {template.producesHtml ? (
-            <Badge variant="secondary" className="mt-0.5 shrink-0">
+            <Badge variant="default">
               <FileCode2 className="h-3 w-3" />
-              HTML 파일
+              HTML 파일 도출
+            </Badge>
+          ) : (
+            <Badge variant="outline">채팅 화면으로 도출</Badge>
+          )}
+          {template.sameChat ? (
+            <Badge variant="warning">
+              <CornerDownRight className="h-3 w-3" />
+              같은 대화창에서 이어서
             </Badge>
           ) : null}
-        </CardTitle>
-        <p className="pl-7 text-xs leading-relaxed text-muted-foreground">{template.when}</p>
+        </div>
+
+        <p className="pl-7 pt-1 text-xs leading-relaxed text-muted-foreground">
+          {template.when}
+        </p>
       </CardHeader>
 
       <CardContent className="space-y-3">
@@ -143,21 +155,11 @@ function PromptCard({
               Claude 열기
             </a>
           </Button>
-          <Button size="sm" variant="ghost" onClick={handleCopyLink} title="claude.ai 주소 복사">
-            {linkCopied ? <Check className="text-emerald-600" /> : <Link2 />}
-            {linkCopied ? "복사됨!" : "주소 복사"}
-          </Button>
           <Button size="sm" variant="ghost" onClick={() => setOpen((prev) => !prev)}>
             {open ? <EyeOff /> : <Eye />}
             {open ? "접기" : "내용 보기"}
           </Button>
         </div>
-
-        <p className="text-[11px] leading-relaxed text-muted-foreground">
-          &lsquo;Claude 열기&rsquo;를 눌렀는데 <strong>데스크탑 앱</strong>이 열린다면, &lsquo;주소
-          복사&rsquo;로 링크를 복사해 평소 쓰는 <strong>웹 브라우저 새 탭</strong> 주소창에
-          붙여넣으세요. 설치 없이 그대로 접속됩니다.
-        </p>
 
         {copied ? (
           <p className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
